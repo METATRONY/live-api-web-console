@@ -38,7 +38,7 @@ export function useLiveAPI(options: LiveClientOptions): UseLiveAPIResults {
   const client = useMemo(() => new GenAILiveClient(options), [options]);
   const audioStreamerRef = useRef<AudioStreamer | null>(null);
 
-  const [model, setModel] = useState<string>("models/gemini-2.0-flash-exp");
+  const [model, setModel] = useState<string>("gemini-2.5-flash-native-audio-preview-12-2025");
   const [config, setConfig] = useState<LiveConnectConfig>({});
   const [connected, setConnected] = useState(false);
   const [volume, setVolume] = useState(0);
@@ -100,7 +100,19 @@ export function useLiveAPI(options: LiveClientOptions): UseLiveAPIResults {
       throw new Error("config has not been set");
     }
     client.disconnect();
-    await client.connect(model, config);
+    // Replace RAG delimiter with a model-friendly instruction so responses are grounded in the context
+    const effectiveConfig =
+      typeof config.systemInstruction === "string" &&
+      config.systemInstruction.includes("---RAG CONTEXT---")
+        ? {
+            ...config,
+            systemInstruction: config.systemInstruction.replace(
+              /\n\n---RAG CONTEXT---\n\n/,
+              "\n\nUse the following context when answering. If the answer is not in the context, say so.\n\n"
+            ),
+          }
+        : config;
+    await client.connect(model, effectiveConfig);
   }, [client, config, model]);
 
   const disconnect = useCallback(async () => {

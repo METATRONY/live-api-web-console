@@ -113,6 +113,44 @@
     border: 0;
     resize: vertical;
     box-sizing: border-box;
+
+    &.rag {
+      min-height: 120px;
+      height: 120px;
+    }
+  }
+
+  .rag-file-row {
+    margin-top: 6px;
+    margin-bottom: 4px;
+  }
+
+  .rag-file-label {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .rag-file-input {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .rag-file-button {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background-color: var(--Neutral-20);
+    color: var(--Neutral-80);
+    font-size: 12px;
+    font-family: inherit;
+
+    &:hover {
+      background-color: var(--Neutral-30);
+    }
   }
 
   .function-declarations {

@@ -30,6 +30,8 @@ if (typeof API_KEY !== "string") {
 
 const apiOptions: LiveClientOptions = {
   apiKey: API_KEY,
+  // Live API is a preview feature; v1alpha exposes the correct models/endpoints
+  apiVersion: "v1alpha",
 };
 
 function App() {
